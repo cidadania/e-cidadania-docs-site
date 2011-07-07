@@ -1,0 +1,124 @@
+/* --------- */
+/* CSS RESET */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+	list-style-type: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+:focus {
+	outline: 0;
+}
+
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+a {
+	color: #000;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #CCC;
+}
+
+/* Prevent img border in FF */
+img {
+	border: none;
+}
+
+/* --------- */
+/* END RESET */
+/* --------- */
+
+body {
+    background: #FFFFFF;
+    font-size: 20px;
+    font-family: 'Garamond', 'Georgia', serif;
+    color: #000000;
+}
+
+#wrapper {
+    width: 600px;
+    margin: auto;
+}
+
+#header h1 {
+    text-decoration: none;
+    font-weight: normal;
+    text-align: center;
+    padding: 50px;
+    font-size: 2em;
+}
+
+.section {
+    border-bottom: 1px dashed #000000;
+    padding: 20px 0 20px 0;
+}
+
+.section h3 {
+    font-size: 1.5em;
+    font-weight: normal;
+}
+
+.section ul li {
+    display: inline;
+    line-height: 50px;
+    margin: 10px;
+    padding: 10px;
+    background: #DDD;
+    border-radius: 5px;
+}
+
+.section ul li:hover {
+    background: #666;
+}
+
+.section ul li a {
+    display: inline;
+    padding: 20px;
+    font-size: 1.3em;
+}
+
+#footer {
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9em;
+}
