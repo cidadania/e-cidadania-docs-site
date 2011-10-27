@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es-ES" xml:lang="es-ES">
 
     <head>
-    	<title>e-cidadania documentation</title>
+    	<title>Documentación de e-cidadania</title>
     	<link rel="shortcut icon" href="favicon.ico" type="image/ico"/>
     	<link rel="icon" href="favicon.ico" type="image/ico"/>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -14,17 +14,17 @@
     <div id="wrapper">
     
         <div id="header">
-            <h1><img src="img/logo-en.png" /><br /><br />Select your documentation</h1>
+            <h1><img src="img/logo-es.png" /><br /><br />Selecciona tu documentación</h1>
         </div>
         
         <div id="warning" style="background: #FCC;border: 1px solid #FAA;">
-            Currently the documentation is not available. We are updating our automated
-            documentation system. Sorry for the inconvenience.
+            Actualmente la documentación no está disponible. Estamos actualizando el
+            sistema de documentación. Disculpa las molestias.
         </div>
         
         <form name="selectors" action="" style="text-align: center;">
             <select id="language">
-                <option value="">-- Language --
+                <option value="">-- Idioma --
                 <option value="en">English
                 <option value="es">Español
                 <option value="gl">Galego
@@ -39,9 +39,9 @@
 
             <br />
             <br />
-            <input type="submit" onclick="doRedirect();" style="height: 40px; width: 150px;" value="Read online">
-            <input type="submit" onclick="getDocs('pdf');" style="height: 40px; width: 150px;" value="Download PDF">
-            <input type="submit" onclick="getDocs('tar.gz');" style="height: 40px; width: 150px;" value="Download LaTeX">
+            <input type="submit" onclick="doRedirect();" style="height: 40px; width: 150px;" value="Leer online">
+            <input type="submit" onclick="getDocs('pdf');" style="height: 40px; width: 150px;" value="Descargar PDF">
+            <input type="submit" onclick="getDocs('tar.gz');" style="height: 40px; width: 150px;" value="Descargar LaTeX">
         </form>
 
         <script type="text/javascript">
@@ -50,7 +50,7 @@
                 var version = document.selectors.version.value;
                 
                 if (language == "" || version == "") {
-                    alert("You didn't select language or version.")
+                    alert("No has seleccionado idioma o versión.")
                 } else {
                     document.selectors.action = language + '/' + version
                 }
@@ -61,7 +61,7 @@
                 var version = document.selectors.version.value;
                 
                 if (language == "" || version == "") {
-                    alert("You didn't select language or version.")
+                    alert("No has seleccionado idioma o versión.")
                 } else {
                     document.selectors.action = language + '/' + version + '-' + language + '.' + format
                 }
@@ -69,8 +69,8 @@
         </script>
         
         <div id="footer">
-            <p>e-cidadania documents are automatically generated with <a href="http://sphinx.pocoo.org">sphinx</a> 1.1</p>
-            <p>This page is also available in: <a href="index-es.html">spanish</a>, <a href="index-gl.html">galician</a></p>
+            <p>Los documentos de e-cidadania son generados automáticamente con <a href="http://sphinx.pocoo.org">sphinx</a> 1.1</p>
+            <p>Esta página también está disponible en: <a href="index.html">inglés</a>, <a href="index-gl.html">gallego</a></p>
         </div>
         
     </div>
