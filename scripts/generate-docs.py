@@ -31,7 +31,7 @@ class Documents():
         self.cwd = os.getcwd()
         self.langs = ["es", "en", "gl"]
         self.formats = ["html", "latex", "latexpdf"]
-        
+
         # We don't include cidadania's server repository because it
         # needs authentication and some specific settings.
         self.repos = [
@@ -50,7 +50,7 @@ class Documents():
         """
         i = 0
         print "\n >> Getting e-cidadania codebase from %s..." % self.repos[i].split('/')[2]
-        
+
         done = False
         while not done:
             if i <= (len(self.repos) - 1):
@@ -61,57 +61,104 @@ class Documents():
                     print " -- Couldn't get the code from %s" % self.repos[i].split('/')[2]
                     i += 1
             else:
-                sys.exit("\n EE Couldn't get the e-cidadania codebase. Exiting.\n")
+                import shutil
+                print "\n EE Couldn't get the e-cidadania codebase. This can be caused by an old copy of the codebase."
+                print " -- Trying to delete the old codebase..."
+                try:
+                    os.chdir('../')
+                    shutil.rmtree('ecidadania/')
+                    print " -- Code succesfully deleted. Please run the application again.\n"
+                    os.chdir('scripts/')
+                except:
+                    print " -- There was some error trying to delete the old codebase. Exiting.\n"
+                sys.exit()
 
     def compile_docs(self):
 
         """
         Compile all the documentation and languages at once.
         """
-        print "\n >> Generating the HTML documentation..."
         os.chdir(self.cwd + '/../ecidadania/docs/')
+        sys.stdout.write("\n >> Compiling documentation... ")
+        sys.stdout.flush()
 
-        gen_html_docs = subprocess.check_call('make html > /dev/null 2>&1', shell=True)
-        if gen_html_docs != 0:
-            sys.exit("\n\n Could not generate the HTML documentation. Exiting.")
-
-#        print "\n\n >> Generating the LaTeX documentation..."
-#        gen_latex_docs = subprocess.check_call('make latex', shell=True)
-#        if gen_latex_docs != 0:
-#            sys.exit("\n\n Could not generate the LaTeX documentation. Exiting.")
-
-#        print "\n\n >> Generating the PDF documentation..."
-#        gen_pdf_docs = subprocess.check_call('make latexpdf', shell=True)
-#        if gen_pdf_docs != 0:
-#            sys.exit("\n\n Could not generate the PDF documentation. Exiting.")
+        i = 0
+        done = False
+        while not done:
+            if i < (len(self.formats) - 1):
+                try:
+                    sys.stdout.write('(%s) ' % self.formats[i])
+                    sys.stdout.flush()
+                    gen_docs = subprocess.check_call('make ' + self.formats[i] + ' > /dev/null 2>&1', shell=True)
+                    if gen_docs == 0:
+                        i += 1
+                except:
+                    print " -- Couldn't compile the %s documentation." % self.formats[i]
+                    i += 1
+            elif i == (len(self.formats) - 1):
+                try:
+                    sys.stdout.write('(%s) ' % self.formats[i])
+                    sys.stdout.flush()
+                    gen_docs = subprocess.check_call('make ' + self.formats[i] + ' > /dev/null 2>&1', shell=True)
+                    if gen_docs == 0:
+                        i += 1
+                        done = True
+                except:
+                    print " -- Couldn't compile the %s documentation." % self.formats[i]
+                    i += 1
+            else:
+                sys.exit("\n EE Couldn't generate documentation. Exiting.\n")
+        print "\n"
 
     def pack_latex(self):
 
         """
         Package the LaTeX documentation into a tar.gz
         """
-        pass
+        print " >> Packaging the LaTeX files..."
+        import tarfile
+        
+        os.chdir(os.getcwd() + '/build/latex/')
+        i = 0
+        while i <= (len(self.langs) - 1):
+            tar = tarfile.open(os.getcwd() + "/../../%s/latest.tar.gz" % self.langs[i], "w:gz")
+            tar.add(self.langs[i])
+            tar.close()
+            i += 1
+            
 
     def copy_docs(self):
 
         """
         Copy the generated documentation into their respective directories.
         """
-        print "\n >> Copying the HTML documentation..."
-        sys.stdout.write(" >> done ")
-        sys.stdout.flush()
-        
-        i = 0
-        while i <= (len(self.langs) - 1):
-            copy_html = subprocess.check_call('cp -R build/html/' + self.langs[i] + '/* ../../' + self.langs[i] + '/latest', shell=True)
-            sys.stdout.write("(%s) " % self.langs[i])
+        print os.getcwd()
+        os.chdir("../../")
+        print os.getcwd()
+        c = 0
+        while c <= (len(self.formats) - 1):
+            print "\n >> Copying the %s documentation..." % self.formats[c]
+            sys.stdout.write(" >> done ")
             sys.stdout.flush()
-            i += 1
-        print "\n"
-        
+            
+            i = 0
+            while i <= (len(self.langs) - 1):
+                if self.formats[i] == 'latexpdf':
+                    copy_html = subprocess.check_call('cp -R build/latex/' + self.langs[i] + '/e-cidadania.pdf ../../' + self.langs[i] + '/latest/' + self.langs[i] + '-latest.pdf', shell=True)
+                    sys.stdout.write("(%s) " % self.langs[i])
+                    sys.stdout.flush()
+                    i += 1
+                copy_html = subprocess.check_call('cp -R build/' + self.formats[i] + '/' + self.langs[i] + '/* ../../' + self.langs[i] + '/latest', shell=True)
+                sys.stdout.write("(%s) " % self.langs[i])
+                sys.stdout.flush()
+                i += 1
+            print "\n"
+            c += 1
+
     def make_all(self):
         self.download_code()
         self.compile_docs()
+        self.pack_latex()
         self.copy_docs()
 
 doc = Documents()
