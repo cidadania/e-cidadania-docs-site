@@ -121,7 +121,7 @@ class Documents():
         os.chdir(os.getcwd() + '/build/latex/')
         i = 0
         while i <= (len(self.langs) - 1):
-            tar = tarfile.open(os.getcwd() + "/../../%s/latest.tar.gz" % self.langs[i], "w:gz")
+            tar = tarfile.open(os.getcwd() + "/../../%s/latest-%s.tar.gz" % (self.langs[i], self.langs[i]), "w:gz")
             tar.add(self.langs[i])
             tar.close()
             i += 1
@@ -132,26 +132,35 @@ class Documents():
         """
         Copy the generated documentation into their respective directories.
         """
-        print os.getcwd()
         os.chdir("../../")
-        print os.getcwd()
+
         c = 0
         while c <= (len(self.formats) - 1):
-            print "\n >> Copying the %s documentation..." % self.formats[c]
+            print " >> Copying the %s documentation..." % self.formats[c]
             sys.stdout.write(" >> done ")
             sys.stdout.flush()
             
             i = 0
             while i <= (len(self.langs) - 1):
-                if self.formats[i] == 'latexpdf':
-                    copy_html = subprocess.check_call('cp -R build/latex/' + self.langs[i] + '/e-cidadania.pdf ../../' + self.langs[i] + '/latest/' + self.langs[i] + '-latest.pdf', shell=True)
+                if self.formats[c] == 'latexpdf':
+                    try:
+                        copy_latexpdf = subprocess.check_call('cp -R build/latex/' + self.langs[i] + '/e-cidadania.pdf ../../' + self.langs[i] + '/latest-' + self.langs[i] + '.pdf', shell=True)
+                    except:
+                        print " -- Couldn't copy the " + self.langs[i] + " documentation."
+                        pass
                     sys.stdout.write("(%s) " % self.langs[i])
                     sys.stdout.flush()
                     i += 1
-                copy_html = subprocess.check_call('cp -R build/' + self.formats[i] + '/' + self.langs[i] + '/* ../../' + self.langs[i] + '/latest', shell=True)
-                sys.stdout.write("(%s) " % self.langs[i])
-                sys.stdout.flush()
-                i += 1
+                elif self.formats[c] == 'html':
+                    copy_html = subprocess.check_call('cp -R build/' + self.formats[c] + '/' + self.langs[i] + '/* ../../' + self.langs[i] + '/latest', shell=True)
+                    sys.stdout.write("(%s) " % self.langs[i])
+                    sys.stdout.flush()
+                    i += 1
+                elif self.formats[c] == 'latex':
+                    copy_latex = subprocess.check_call('cp -R ' + self.langs[i] + '/latest-' + self.langs[i] + '.tar.gz' + ' ../../' + self.langs[i], shell=True)
+                    sys.stdout.write("(%s) " % self.langs[i])
+                    sys.stdout.flush()
+                    i += 1
             print "\n"
             c += 1
 
