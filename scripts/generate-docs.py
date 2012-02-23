@@ -18,6 +18,10 @@ __maintainer__ = "Oscar Carballal Prego"
 __email__ = "oscar.carballal@cidadania.coop"
 __status__ = "Development"
 
+# CONFIGURATION
+LANGS = ["es", "en", "gl"]
+FORMATS = ["html", "latex", "latexpdf"]
+
 class Documents():
 
     """
@@ -29,8 +33,8 @@ class Documents():
         Declare variables.
         """
         self.cwd = os.getcwd()
-        self.langs = ["es", "en", "gl"]
-        self.formats = ["html", "latex", "latexpdf"]
+        self.langs = LANGS
+        self.formats = FORMATS
 
         # We don't include cidadania's server repository because it
         # needs authentication and some specific settings.
@@ -133,6 +137,7 @@ class Documents():
         Copy the generated documentation into their respective directories.
         """
         os.chdir("../../")
+        print os.getcwd()
 
         c = 0
         while c <= (len(self.formats) - 1):
@@ -152,12 +157,18 @@ class Documents():
                     sys.stdout.flush()
                     i += 1
                 elif self.formats[c] == 'html':
-                    copy_html = subprocess.check_call('cp -R build/' + self.formats[c] + '/' + self.langs[i] + '/* ../../' + self.langs[i] + '/latest', shell=True)
+                    copy_to_dir = '../../' + self.langs[i] + '/latest'
+                    if not os.path.exists(copy_to_dir):
+                        os.makedirs(copy_to_dir)
+                    copy_html = subprocess.check_call('cp -R build/' + self.formats[c] + '/' + self.langs[i] + '/* ' + copy_to_dir, shell=True)
                     sys.stdout.write("(%s) " % self.langs[i])
                     sys.stdout.flush()
                     i += 1
                 elif self.formats[c] == 'latex':
-                    copy_latex = subprocess.check_call('cp -R ' + self.langs[i] + '/latest-' + self.langs[i] + '.tar.gz' + ' ../../' + self.langs[i], shell=True)
+                    copy_to_dir = '../../' + self.langs[i]
+                    if not os.path.exists(copy_to_dir):
+                        os.makedirs(copy_to_dir)
+                    copy_latex = subprocess.check_call('cp -R ' + self.langs[i] + '/latest-' + self.langs[i] + '.tar.gz ' + copy_to_dir, shell=True)
                     sys.stdout.write("(%s) " % self.langs[i])
                     sys.stdout.flush()
                     i += 1
