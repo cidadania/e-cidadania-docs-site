@@ -8,6 +8,8 @@ the documentation and places it in the documentation website
 import sys
 import os
 import subprocess
+import shutil
+
 
 __author__ = "Oscar Carballal Prego"
 __copyright__ = "Copyright 2011, Cidadania Sociedade Cooperativa Galega"
@@ -180,6 +182,10 @@ class Documents():
         self.compile_docs()
         self.pack_latex()
         self.copy_docs()
+        # Delete the ecidadania codebase directory
+        print " >> Deleting the ecidadania codebase directory...\n"
+        os.chdir('../')
+        shutil.rmtree(os.getcwd())
 
 doc = Documents()
 doc.make_all()
