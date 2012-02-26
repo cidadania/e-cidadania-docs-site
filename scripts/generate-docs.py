@@ -23,6 +23,7 @@ __status__ = "Development"
 # CONFIGURATION
 LANGS = ["es", "en", "gl"]
 FORMATS = ["html", "latex", "latexpdf"]
+WORKING_DIR = 'YOURWORKINGDIR'
 
 class Documents():
 
