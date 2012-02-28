@@ -19,26 +19,21 @@
         
         <!--
         <div id="warning" style="background: #FCC;border: 1px solid #FAA;">
-            Actualmente la documentación no está disponible. Estamos actualizando el
-            sistema de documentación. Disculpa las molestias.
+            Actualmente sólo está disponible la documentación de <strong>desarrollo</strong>
+            debido a la inconsistencia de la documentación antigua.
         </div>
         -->
         
         <form name="selectors" action="" style="text-align: center;">
-            <select id="language">
-                <option value="">-- Idioma --
-                <option value="en">English
-                <option value="es">Español
-                <option value="gl">Galego
+            <select id="language" onchange="changeOpts();">
+                <option value="">-- Idioma --</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="gl">Galego</option>
             </select>
 
             <select id="version">
-                <option value="">-- Version --
-                <option value="latest">desarrollo
-                <option value="">----
-                <option value="0.1a">0.1 alpha
-                <option value="0.1b">0.1 beta
-                <option value="0.1final">0.1 final
+                <option value="">-- Versión --</option>
             </select>  
 
             <br />
@@ -48,33 +43,58 @@
             <input type="submit" onclick="getDocs('tar.gz');" style="height: 40px; width: 150px;" value="Descargar LaTeX">
         </form>
 
-        <script type="text/javascript">
-            function doRedirect() {
-                var language = document.selectors.language.value;
-                var version = document.selectors.version.value;
-                
-                if (language == "" || version == "") {
-                    alert("No has seleccionado idioma o versión.")
-                } else {
-                    document.selectors.action = language + '/' + version
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript">                
+                function doRedirect() {
+                    var language = document.selectors.language.value;
+                    var version = document.selectors.version.value;
+                    
+                    if (language == "" || version == "") {
+                        alert("No has seleccionado idioma o versión.")
+                    } else {
+                        document.selectors.action = language + '/' + version
+                    }
                 }
-            }
-            
-            function getDocs(format) {
-                var language = document.selectors.language.value;
-                var version = document.selectors.version.value;
                 
-                if (language == "" || version == "") {
-                    alert("No has seleccionado idioma o versión.")
-                } else {
-                    document.selectors.action = language + '/' + version + '-' + language + '.' + format
+                function getDocs(format) {
+                    var language = document.selectors.language.value;
+                    var version = document.selectors.version.value;
+                    
+                    if (language == "" || version == "") {
+                        alert("No has seleccionado idioma o versión.")
+                    } else {
+                        document.selectors.action = language + '/' + version + '-' + language + '.' + format
+                    }
                 }
-            }
+                
+                function changeOpts() {
+                    var esOptions = {"-- Version --": "", "desarrollo": "latest", "0.1 beta": "0.1b", "0.1 alfa": "0.1a"};
+                    var enOptions = {"-- Version --": "", "desarrollo": "latest", "0.1 beta": "0.1b"};
+                    var glOptions = {"-- Version --": "", "desarrollo": "latest", "0.1 beta": "0.1b"};
+                    var language = document.selectors.language.value;
+                    var $el = $("#version");
+                    $el.empty(); // remove old options
+                    // I can't figure out right now a better way to do this, so welcome
+                    // to noob time!
+                    if (language == 'es') {
+                        $.each(esOptions, function(key, value) {
+                            $el.append($("<option></option>").attr("value", value).text(key));
+                        });
+                    } else if (language == 'en') {
+                        $.each(enOptions, function(key, value) {
+                            $el.append($("<option></option>").attr("value", value).text(key));
+                        });
+                    } else if (language == 'gl') {
+                        $.each(glOptions, function(key, value) {
+                            $el.append($("<option></option>").attr("value", value).text(key));
+                        });
+                    }
+                }
         </script>
         
         <div id="footer">
-            <p>Esta página también está disponible en: <a href="index.html">English</a>, <a href="index-gl.html">Galego</a></p>
-            <p>Los documentos de e-cidadania son generados automáticamente con <a href="http://sphinx.pocoo.org">sphinx</a> 1.1.2 cada sábado a las 00:00 PST (UTC -08:00).</p> 
+            <p>Esta página también está disponible en: <a href="index.html">English</a>, <a href="index-gl.html">Galego</a></p><br />
+            <p>La documentación de e-cidadania se genera automáticamente con <a href="http://sphinx.pocoo.org">sphinx</a> 1.1.2 cada dia a las 00:00 PST (UTC -08:00).</p> 
         </div>
         
     </div>

@@ -19,26 +19,21 @@
         
         <!--
         <div id="warning" style="background: #FCC;border: 1px solid #FAA;">
-            Actualmente a documentación non está dispoñible. Estamos a actualizar
-            o sistema de documentación. Desculpa as molestias.
+            Actualmente sólo se atopa dispoñible a documentación de <strong>desenvolvemento</strong>
+            debido á inconsistencia da documentación antiga.
         </div>
         -->
         
         <form name="selectors" action="" style="text-align: center;">
-            <select id="language">
-                <option value="">-- Idioma --
-                <option value="en">English
-                <option value="es">Español
-                <option value="gl">Galego
+            <select id="language" onchange="changeOpts();">
+                <option value="">-- Idioma --</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="gl">Galego</option>
             </select>
 
             <select id="version">
-                <option value="">-- Version --
-                <option value="latest">desenvolvemento
-                <option value="">----
-                <option value="0.1a">0.1 alpha
-                <option value="0.1b">0.1 beta
-                <option value="0.1final">0.1 final
+                <option value="">-- Versión --</option>
             </select>  
 
             <br />
@@ -48,6 +43,7 @@
             <input type="submit" onclick="getDocs('tar.gz');" style="height: 40px; width: 150px;" value="Baixar LaTeX">
         </form>
 
+        <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript">
             function doRedirect() {
                 var language = document.selectors.language.value;
@@ -70,11 +66,35 @@
                     document.selectors.action = language + '/' + version + '-' + language + '.' + format
                 }
             }
+           
+            function changeOpts() {
+                var esOptions = {"-- Versión --": "", "desenvolvemento": "latest", "0.1 beta": "0.1b", "0.1 alfa": "0.1a"};
+                var enOptions = {"-- Versión --": "", "desenvolvemento": "latest", "0.1 beta": "0.1b"};
+                var glOptions = {"-- Versión --": "", "desenvolvemento": "latest", "0.1 beta": "0.1b"};
+                var language = document.selectors.language.value;
+                var $el = $("#version");
+                $el.empty(); // remove old options
+                // I can't figure out right now a better way to do this, so welcome
+                // to noob time!
+                if (language == 'es') {
+                    $.each(esOptions, function(key, value) {
+                        $el.append($("<option></option>").attr("value", value).text(key));
+                    });
+                } else if (language == 'en') {
+                    $.each(enOptions, function(key, value) {
+                        $el.append($("<option></option>").attr("value", value).text(key));
+                    });
+                } else if (language == 'gl') {
+                    $.each(glOptions, function(key, value) {
+                        $el.append($("<option></option>").attr("value", value).text(key));
+                    });
+                }
+            }
         </script>
         
         <div id="footer">
-            <p>Esta páxina tamén está dispoñible en: <a href="index.html">English</a>, <a href="index-es.html">Español</a></p>
-            <p>Os documentos de e-cidadania son xerados automáticamente por <a href="http://sphinx.pocoo.org">sphinx</a> 1.1.2 cada sábado ás 00:00 PST (UTC -08:00)</p>
+            <p>Esta páxina tamén está dispoñible en: <a href="index.html">English</a>, <a href="index-es.html">Español</a></p><br />
+            <p>A documentación de e-cidadania xérase automáticamente con <a href="http://sphinx.pocoo.org">sphinx</a> 1.1.2 cada dia ás 00:00 PST (UTC -08:00)</p>
         </div>
         
     </div>

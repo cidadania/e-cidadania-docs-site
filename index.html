@@ -19,26 +19,21 @@
         
         <!--
         <div id="warning" style="background: #FCC;border: 1px solid #FAA;">
-            Currently the documentation is not available. We are updating our automated
-            documentation system. Sorry for the inconvenience.
+            At this moment, only the <strong>development</strong> documentation is available
+            due to the inconsistency of old documentation.
         </div>
         -->
         
         <form name="selectors" action="" style="text-align: center;">
-            <select id="language">
-                <option value="">-- Language --
-                <option value="en">English
-                <option value="es">Español
-                <option value="gl">Galego
+            <select id="language" onchange="changeOpts();">
+                <option value="">-- Language --</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="gl">Galego</option>
             </select>
 
             <select id="version">
-                <option value="">-- Version --
-                <option value="latest">development
-                <option value="">----
-                <option value="0.1a">0.1 alpha
-                <option value="0.1b">0.1 beta
-                <option value="0.1final">0.1 final
+                <option value="">-- Version --</option>
             </select>  
 
             <br />
@@ -48,33 +43,58 @@
             <input type="submit" onclick="getDocs('tar.gz');" style="height: 40px; width: 150px;" value="Download LaTeX">
         </form>
 
-        <script type="text/javascript">
-            function doRedirect() {
-                var language = document.selectors.language.value;
-                var version = document.selectors.version.value;
-                
-                if (language == "" || version == "") {
-                    alert("You didn't select language or version.")
-                } else {
-                    document.selectors.action = language + '/' + version
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript">                
+                function doRedirect() {
+                    var language = document.selectors.language.value;
+                    var version = document.selectors.version.value;
+                    
+                    if (language == "" || version == "") {
+                        alert("You didn't select language or version.")
+                    } else {
+                        document.selectors.action = language + '/' + version
+                    }
                 }
-            }
-            
-            function getDocs(format) {
-                var language = document.selectors.language.value;
-                var version = document.selectors.version.value;
                 
-                if (language == "" || version == "") {
-                    alert("You didn't select language or version.")
-                } else {
-                    document.selectors.action = language + '/' + version + '-' + language + '.' + format
+                function getDocs(format) {
+                    var language = document.selectors.language.value;
+                    var version = document.selectors.version.value;
+                    
+                    if (language == "" || version == "") {
+                        alert("You didn't select language or version.")
+                    } else {
+                        document.selectors.action = language + '/' + version + '-' + language + '.' + format
+                    }
                 }
-            }
+                
+                function changeOpts() {
+                    var esOptions = {"-- Version --": "", "development": "latest", "0.1 beta": "0.1b", "0.1 alpha": "0.1a"};
+                    var enOptions = {"-- Version --": "", "development": "latest", "0.1 beta": "0.1b"};
+                    var glOptions = {"-- Version --": "", "development": "latest", "0.1 beta": "0.1b"};
+                    var language = document.selectors.language.value;
+                    var $el = $("#version");
+                    $el.empty(); // remove old options
+                    // I can't figure out right now a better way to do this, so welcome
+                    // to noob time!
+                    if (language == 'es') {
+                        $.each(esOptions, function(key, value) {
+                            $el.append($("<option></option>").attr("value", value).text(key));
+                        });
+                    } else if (language == 'en') {
+                        $.each(enOptions, function(key, value) {
+                            $el.append($("<option></option>").attr("value", value).text(key));
+                        });
+                    } else if (language == 'gl') {
+                        $.each(glOptions, function(key, value) {
+                            $el.append($("<option></option>").attr("value", value).text(key));
+                        });
+                    }
+                }
         </script>
         
         <div id="footer">
-            <p>This page is also available in: <a href="index-es.html">Español</a>, <a href="index-gl.html">Galego</a></p>
-            <p>e-cidadania documents are automatically generated with <a href="http://sphinx.pocoo.org">sphinx</a> 1.1.2 every saturday at 00:00 PST (UTC -08:00).</p>
+            <p>This page is also available in: <a href="index-es.html">Español</a>, <a href="index-gl.html">Galego</a></p><br />
+            <p>e-cidadania documentation is automatically generated with <a href="http://sphinx.pocoo.org">sphinx</a> 1.1.2 every day at 00:00 PST (UTC -08:00).</p>
         </div>
         
     </div>
